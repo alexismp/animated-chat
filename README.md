@@ -4,7 +4,7 @@ Generate clean, realistic animated chat GIFs from declarative JSON, TOML, or YAM
 
 The tool renders a modern macOS-style chat window complete with realistic window chrome, drop shadows, participant avatars, typing indicators, bubble pop-in animations, link formatting, and emoji support.
 
-![Animated Chat Demo](pierre-alexis-chat.gif)
+![Animated Chat Demo](chat.gif)
 
 ## Features
 
