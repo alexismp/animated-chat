@@ -1,0 +1,66 @@
+{
+  "output": "pierre-alexis-chat.gif",
+  "width": 1024,
+  "height": 768,
+  "fps": 15,
+  "loop": -1,
+  "initial_delay": 2.0,
+  "window": {
+    "title": "Bob & Alice",
+    "subtitle": "Direct message • 2 participants online",
+    "input_placeholder": "Type a message in the chat...",
+    "typing_status_template": "{sender} is typing...",
+    "typing_bubble_label_template": "{sender} is typing..."
+  },
+  "participants": {
+    "Bob": {
+      "side": "left",
+      "avatar_letter": "B",
+      "avatar_color": "#6366f1",
+      "name_color": "#a5b4fc",
+      "bubble_color": "#26344a",
+      "bubble_border_color": "#3b4c69",
+      "text_color": "#f8fafc"
+    },
+    "Alice": {
+      "side": "right",
+      "avatar_letter": "A",
+      "avatar_color": "#10b981",
+      "name_color": "#6ee7b7",
+      "bubble_color": "#2563eb",
+      "bubble_border_color": "#3b82f6",
+      "text_color": "#ffffff"
+    }
+  },
+  "messages": [
+    {
+      "sender": "Bob",
+      "time": "17:24",
+      "text": "Honestly, I don't get why we still keep expensive devs around when AI just coded everything for me in 20 minutes without a single bug! Your job is dead 💀",
+      "typing_duration": 0.0,
+      "hold_duration": 4.25
+    },
+    {
+      "sender": "Alice",
+      "time": "17:25",
+      "text": "Oh really? Awesome, send me the link so I can test it!",
+      "typing_duration": 2.5,
+      "hold_duration": 1.9
+    },
+    {
+      "sender": "Bob",
+      "time": "17:25",
+      "text": "Here: http//localhost:8080",
+      "typing_duration": 2.5,
+      "hold_duration": 1.1,
+      "links": ["http//localhost:8080"]
+    },
+    {
+      "sender": "Bob",
+      "time": "17:25",
+      "text": "Click on it and let me know what you think!",
+      "typing_duration": 2.4,
+      "hold_duration": 4.1
+    }
+  ]
+}
