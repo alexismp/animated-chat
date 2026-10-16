@@ -1,8 +1,8 @@
-# Animated Chat GIF Generator
+# Animated Chat GIF & Video Generator
 
-Generate clean, realistic animated chat GIFs from declarative JSON, TOML, or YAML configuration files.
+Generate clean, realistic animated chat GIFs, synchronized MP3 audio tracks, and compact MP4 videos from declarative JSON, TOML, or YAML configuration files.
 
-The tool renders a modern macOS-style chat window complete with realistic window chrome, drop shadows, participant avatars, typing indicators, bubble pop-in animations, link formatting, and emoji support.
+The tool renders a modern macOS or mobile chat window complete with realistic window chrome, drop shadows, participant avatars, typing indicators, bubble pop-in animations, spatial stereo sound effects, link formatting, and emoji support.
 
 ![Animated Chat Demo](chat.gif)
 
