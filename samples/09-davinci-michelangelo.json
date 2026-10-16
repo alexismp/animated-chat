@@ -1,0 +1,76 @@
+{
+  "output": "09-davinci-michelangelo.gif",
+  "audio_output": "09-davinci-michelangelo.mp3",
+  "theme": "light",
+  "portrait": true,
+  "width": 576,
+  "height": 960,
+  "fps": 20,
+  "loop": -1,
+  "initial_delay": 2.0,
+  "audio": {
+    "enabled": true,
+    "volume": 0.85,
+    "left_sound": "pop",
+    "right_sound": "sent",
+    "typing_sound": false
+  },
+  "window": {
+    "title": "Leonardo & Michelangelo",
+    "subtitle": "Florence Commissions • Active now",
+    "input_placeholder": "Sketch a reply...",
+    "typing_status_template": "{sender} is sketching...",
+    "typing_bubble_label_template": "{sender} is typing..."
+  },
+  "participants": {
+    "Leonardo da Vinci": {
+      "side": "left",
+      "avatar_letter": "L",
+      "avatar_color": "#d97706",
+      "name_color": "#b45309",
+      "bubble_color": "#f1f5f9",
+      "bubble_border_color": "#e2e8f0",
+      "text_color": "#0f172a"
+    },
+    "Michelangelo": {
+      "side": "right",
+      "avatar_letter": "M",
+      "avatar_color": "#4f46e5",
+      "name_color": "#4338ca",
+      "bubble_color": "#4f46e5",
+      "bubble_border_color": "#4338ca",
+      "text_color": "#ffffff"
+    }
+  },
+  "messages": [
+    {
+      "sender": "Michelangelo",
+      "time": "15:04",
+      "text": "Leo, have you finished painting that portrait of Lisa Gherardini yet? It has been four years! 🎨",
+      "typing_duration": 0.0,
+      "hold_duration": 4.1
+    },
+    {
+      "sender": "Leonardo da Vinci",
+      "time": "15:05",
+      "text": "Almost! Just need to add her eyebrows, right after I finish designing this wooden helicopter, a diving suit, and a robot knight 🚁",
+      "typing_duration": 3.2,
+      "hold_duration": 4.7
+    },
+    {
+      "sender": "Michelangelo",
+      "time": "15:05",
+      "text": "Must be nice! Meanwhile I've been lying flat on my back on scaffolding painting the Sistine Chapel ceiling for 48 months 🖌️",
+      "typing_duration": 3.1,
+      "hold_duration": 4.6
+    },
+    {
+      "sender": "Leonardo da Vinci",
+      "time": "15:06",
+      "text": "Tell you what: skip the ceiling and let's go invent a bicycle! 🚲✨",
+      "typing_duration": 2.6,
+      "hold_duration": 7.6
+    }
+  ],
+  "video_output": "09-davinci-michelangelo.mp4"
+}

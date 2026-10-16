@@ -1,6 +1,8 @@
 {
   "output": "chat.gif",
   "audio_output": "chat.mp3",
+  "theme": "dark",
+  "portrait": false,
   "width": 1024,
   "height": 768,
   "fps": 20,

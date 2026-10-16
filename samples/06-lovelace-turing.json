@@ -1,0 +1,76 @@
+{
+  "output": "06-lovelace-turing.gif",
+  "audio_output": "06-lovelace-turing.mp3",
+  "theme": "light",
+  "portrait": false,
+  "width": 1024,
+  "height": 768,
+  "fps": 20,
+  "loop": -1,
+  "initial_delay": 2.0,
+  "audio": {
+    "enabled": true,
+    "volume": 0.85,
+    "left_sound": "chime",
+    "right_sound": "sent",
+    "typing_sound": false
+  },
+  "window": {
+    "title": "Ada Lovelace & Alan Turing",
+    "subtitle": "Computing Pioneers • Bletchley & London",
+    "input_placeholder": "Punch a card or type a message...",
+    "typing_status_template": "{sender} is computing...",
+    "typing_bubble_label_template": "{sender} is typing..."
+  },
+  "participants": {
+    "Ada Lovelace": {
+      "side": "left",
+      "avatar_letter": "A",
+      "avatar_color": "#7c3aed",
+      "name_color": "#6d28d9",
+      "bubble_color": "#f1f5f9",
+      "bubble_border_color": "#e2e8f0",
+      "text_color": "#0f172a"
+    },
+    "Alan Turing": {
+      "side": "right",
+      "avatar_letter": "T",
+      "avatar_color": "#2563eb",
+      "name_color": "#1d4ed8",
+      "bubble_color": "#2563eb",
+      "bubble_border_color": "#1d4ed8",
+      "text_color": "#ffffff"
+    }
+  },
+  "messages": [
+    {
+      "sender": "Ada Lovelace",
+      "time": "18:43",
+      "text": "Alan, I just finished Note G for the Analytical Engine! It can weave algebraic patterns just like Jacquard's loom weaves flowers ✨",
+      "typing_duration": 0.0,
+      "hold_duration": 4.6
+    },
+    {
+      "sender": "Alan Turing",
+      "time": "19:36",
+      "text": "Brilliant work, Ada! Wait until we feed that into a universal machine—one day we won't be able to tell if a human or machine is replying 🤖",
+      "typing_duration": 3.2,
+      "hold_duration": 5.1
+    },
+    {
+      "sender": "Ada Lovelace",
+      "time": "19:37",
+      "text": "Imagine the scientific breakthroughs humanity will use these computing machines for in the 21st century!",
+      "typing_duration": 2.8,
+      "hold_duration": 3.9
+    },
+    {
+      "sender": "Alan Turing",
+      "time": "19:38",
+      "text": "Mostly arguing in group chats and sending animated cat pictures, according to my calculations 🐱💻",
+      "typing_duration": 2.8,
+      "hold_duration": 7.8
+    }
+  ],
+  "video_output": "06-lovelace-turing.mp4"
+}

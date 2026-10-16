@@ -1,0 +1,76 @@
+{
+  "output": "07-newton-einstein.gif",
+  "audio_output": "07-newton-einstein.mp3",
+  "theme": "dark",
+  "portrait": true,
+  "width": 576,
+  "height": 960,
+  "fps": 20,
+  "loop": -1,
+  "initial_delay": 2.0,
+  "audio": {
+    "enabled": true,
+    "volume": 0.85,
+    "left_sound": "received",
+    "right_sound": "sent",
+    "typing_sound": true
+  },
+  "window": {
+    "title": "Isaac Newton & Albert Einstein",
+    "subtitle": "Physics Dept • Spacetime Continuum",
+    "input_placeholder": "Message at 299,792 km/s...",
+    "typing_status_template": "{sender} is deriving equations...",
+    "typing_bubble_label_template": "{sender} is typing..."
+  },
+  "participants": {
+    "Isaac Newton": {
+      "side": "left",
+      "avatar_letter": "N",
+      "avatar_color": "#dc2626",
+      "name_color": "#fca5a5",
+      "bubble_color": "#26344a",
+      "bubble_border_color": "#3b4c69",
+      "text_color": "#f8fafc"
+    },
+    "Albert Einstein": {
+      "side": "right",
+      "avatar_letter": "E",
+      "avatar_color": "#8b5cf6",
+      "name_color": "#c4b5fd",
+      "bubble_color": "#6d28d9",
+      "bubble_border_color": "#8b5cf6",
+      "text_color": "#ffffff"
+    }
+  },
+  "messages": [
+    {
+      "sender": "Isaac Newton",
+      "time": "16:42",
+      "text": "An apple just fell on my head in the orchard and I solved universal gravitation before tea time. Absolute time, absolute space—done! 🍎",
+      "typing_duration": 0.0,
+      "hold_duration": 4.7
+    },
+    {
+      "sender": "Albert Einstein",
+      "time": "16:43",
+      "text": "Sit down Isaac, I have some news about Mercury's orbit and what happens when you travel near the speed of light 👀",
+      "typing_duration": 3.1,
+      "hold_duration": 4.6
+    },
+    {
+      "sender": "Isaac Newton",
+      "time": "16:43",
+      "text": "Excuse me? My laws of motion have worked fine for 200 years!",
+      "typing_duration": 2.6,
+      "hold_duration": 3.6
+    },
+    {
+      "sender": "Albert Einstein",
+      "time": "16:44",
+      "text": "Relax, your apple wasn't pulled—it was just following a geodesic in curved spacetime! Everything is relative 🌌✨",
+      "typing_duration": 2.9,
+      "hold_duration": 8.0
+    }
+  ],
+  "video_output": "07-newton-einstein.mp4"
+}

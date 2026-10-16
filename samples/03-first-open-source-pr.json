@@ -1,0 +1,76 @@
+{
+  "output": "03-first-open-source-pr.gif",
+  "audio_output": "03-first-open-source-pr.mp3",
+  "theme": "light",
+  "portrait": false,
+  "width": 1024,
+  "height": 768,
+  "fps": 20,
+  "loop": 0,
+  "initial_delay": 2.0,
+  "audio": {
+    "enabled": true,
+    "volume": 0.85,
+    "left_sound": "received",
+    "right_sound": "sent",
+    "typing_sound": false
+  },
+  "window": {
+    "title": "Devon & Elena (Maintainer)",
+    "subtitle": "Open Source Community • 2 participants online",
+    "input_placeholder": "Reply to thread...",
+    "typing_status_template": "{sender} is typing...",
+    "typing_bubble_label_template": "{sender} is typing..."
+  },
+  "participants": {
+    "Devon": {
+      "side": "left",
+      "avatar_letter": "D",
+      "avatar_color": "#6366f1",
+      "name_color": "#4f46e5",
+      "bubble_color": "#f1f5f9",
+      "bubble_border_color": "#e2e8f0",
+      "text_color": "#0f172a"
+    },
+    "Elena": {
+      "side": "right",
+      "avatar_letter": "E",
+      "avatar_color": "#2563eb",
+      "name_color": "#1d4ed8",
+      "bubble_color": "#4f46e5",
+      "bubble_border_color": "#4338ca",
+      "text_color": "#ffffff"
+    }
+  },
+  "messages": [
+    {
+      "sender": "Devon",
+      "time": "14:20",
+      "text": "Hi Elena! I just opened my very first open-source pull request: https://github.com/org/project/pull/42 — hope I didn't break anything!",
+      "typing_duration": 0.0,
+      "hold_duration": 4.2
+    },
+    {
+      "sender": "Elena",
+      "time": "14:22",
+      "text": "Just reviewed it — your test coverage and edge-case fix are super clean! 👏",
+      "typing_duration": 2.7,
+      "hold_duration": 3.8
+    },
+    {
+      "sender": "Elena",
+      "time": "14:22",
+      "text": "Merged into main! Congrats on your first contribution and welcome aboard 🚀🎉",
+      "typing_duration": 2.6,
+      "hold_duration": 3.6
+    },
+    {
+      "sender": "Devon",
+      "time": "14:23",
+      "text": "You just made my whole week! Thank you so much, already looking at the next issue ❤️",
+      "typing_duration": 2.9,
+      "hold_duration": 8.0
+    }
+  ],
+  "video_output": "03-first-open-source-pr.mp4"
+}

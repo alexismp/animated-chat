@@ -1,0 +1,76 @@
+{
+  "output": "05-coffee-overflow.gif",
+  "audio_output": "05-coffee-overflow.mp3",
+  "theme": "dark",
+  "portrait": false,
+  "width": 1024,
+  "height": 768,
+  "fps": 20,
+  "loop": -1,
+  "initial_delay": 2.0,
+  "audio": {
+    "enabled": true,
+    "volume": 0.85,
+    "left_sound": "chime",
+    "right_sound": "pop",
+    "typing_sound": true
+  },
+  "window": {
+    "title": "SmartBrew IoT & Alex",
+    "subtitle": "Kitchen Telemetry • Connected",
+    "input_placeholder": "Send command to SmartBrew...",
+    "typing_status_template": "{sender} is brewing a reply...",
+    "typing_bubble_label_template": "{sender} is typing..."
+  },
+  "participants": {
+    "SmartBrew": {
+      "side": "left",
+      "avatar_letter": "B",
+      "avatar_color": "#d97706",
+      "name_color": "#fcd34d",
+      "bubble_color": "#292524",
+      "bubble_border_color": "#57534e",
+      "text_color": "#fafaf9"
+    },
+    "Alex": {
+      "side": "right",
+      "avatar_letter": "A",
+      "avatar_color": "#06b6d4",
+      "name_color": "#67e8f9",
+      "bubble_color": "#0e7490",
+      "bubble_border_color": "#06b6d4",
+      "text_color": "#ffffff"
+    }
+  },
+  "messages": [
+    {
+      "sender": "SmartBrew",
+      "time": "08:02",
+      "text": "Alert: I detected 0% caffeine in your bloodstream and 63 open StackOverflow tabs ☕",
+      "typing_duration": 0.0,
+      "hold_duration": 3.8
+    },
+    {
+      "sender": "Alex",
+      "time": "08:02",
+      "text": "Wait, how do you know how many browser tabs I have open?!",
+      "typing_duration": 2.6,
+      "hold_duration": 3.6
+    },
+    {
+      "sender": "SmartBrew",
+      "time": "08:03",
+      "text": "Your laptop fan sounds like a jet engine from the kitchen. Brewing a double espresso now!",
+      "typing_duration": 2.8,
+      "hold_duration": 4.0
+    },
+    {
+      "sender": "Alex",
+      "time": "08:03",
+      "text": "Honestly, you're my favorite coworker. Promotion approved 🏆",
+      "typing_duration": 2.6,
+      "hold_duration": 7.5
+    }
+  ],
+  "video_output": "05-coffee-overflow.mp4"
+}

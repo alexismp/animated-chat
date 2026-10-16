@@ -1,0 +1,76 @@
+{
+  "output": "10-hopper-hamilton.gif",
+  "audio_output": "10-hopper-hamilton.mp3",
+  "theme": "light",
+  "portrait": false,
+  "width": 1024,
+  "height": 768,
+  "fps": 20,
+  "loop": 0,
+  "initial_delay": 2.0,
+  "audio": {
+    "enabled": true,
+    "volume": 0.85,
+    "left_sound": "received",
+    "right_sound": "chime",
+    "typing_sound": true
+  },
+  "window": {
+    "title": "Grace Hopper & Margaret Hamilton",
+    "subtitle": "Software Engineering Legends • Online",
+    "input_placeholder": "Compile message...",
+    "typing_status_template": "{sender} is compiling...",
+    "typing_bubble_label_template": "{sender} is typing..."
+  },
+  "participants": {
+    "Grace Hopper": {
+      "side": "left",
+      "avatar_letter": "G",
+      "avatar_color": "#0284c7",
+      "name_color": "#0369a1",
+      "bubble_color": "#f1f5f9",
+      "bubble_border_color": "#e2e8f0",
+      "text_color": "#0f172a"
+    },
+    "Margaret Hamilton": {
+      "side": "right",
+      "avatar_letter": "M",
+      "avatar_color": "#4f46e5",
+      "name_color": "#4338ca",
+      "bubble_color": "#3730a3",
+      "bubble_border_color": "#4f46e5",
+      "text_color": "#ffffff"
+    }
+  },
+  "messages": [
+    {
+      "sender": "Grace Hopper",
+      "time": "15:45",
+      "text": "Mystery solved on the Harvard Mark II! We found an actual moth stuck inside Relay #70 and taped it into the logbook 🦋📓",
+      "typing_duration": 0.0,
+      "hold_duration": 4.7
+    },
+    {
+      "sender": "Margaret Hamilton",
+      "time": "15:46",
+      "text": "Classic! Over at MIT we just printed the full Apollo 11 guidance software listings—the stack is taller than I am 📚🚀",
+      "typing_duration": 3.2,
+      "hold_duration": 4.8
+    },
+    {
+      "sender": "Grace Hopper",
+      "time": "15:47",
+      "text": "What happens if the astronauts leave the rendezvous radar switch in the wrong position during lunar descent?",
+      "typing_duration": 2.9,
+      "hold_duration": 4.1
+    },
+    {
+      "sender": "Margaret Hamilton",
+      "time": "15:48",
+      "text": "Priority-scheduled async executive drops low-priority tasks and lands the Eagle safely! Never underestimate error handling 🌕✨",
+      "typing_duration": 3.0,
+      "hold_duration": 8.4
+    }
+  ],
+  "video_output": "10-hopper-hamilton.mp4"
+}

@@ -1,0 +1,76 @@
+{
+  "output": "04-mars-rover-checkin.gif",
+  "audio_output": "04-mars-rover-checkin.mp3",
+  "theme": "dark",
+  "portrait": true,
+  "width": 576,
+  "height": 960,
+  "fps": 20,
+  "loop": -1,
+  "initial_delay": 2.0,
+  "audio": {
+    "enabled": true,
+    "volume": 0.85,
+    "left_sound": "ding",
+    "right_sound": "sent",
+    "typing_sound": false
+  },
+  "window": {
+    "title": "Perseverance & Mission Control",
+    "subtitle": "Deep Space Network • Sol 1412",
+    "input_placeholder": "Transmit telemetry command...",
+    "typing_status_template": "{sender} transmitting...",
+    "typing_bubble_label_template": "{sender} transmitting..."
+  },
+  "participants": {
+    "Rover": {
+      "side": "left",
+      "avatar_letter": "P",
+      "avatar_color": "#ea580c",
+      "name_color": "#fdba74",
+      "bubble_color": "#26344a",
+      "bubble_border_color": "#475569",
+      "text_color": "#f8fafc"
+    },
+    "Houston": {
+      "side": "right",
+      "avatar_letter": "H",
+      "avatar_color": "#0284c7",
+      "name_color": "#7dd3fc",
+      "bubble_color": "#0369a1",
+      "bubble_border_color": "#0284c7",
+      "text_color": "#ffffff"
+    }
+  },
+  "messages": [
+    {
+      "sender": "Houston",
+      "time": "06:12",
+      "text": "Good morning Perseverance! How are the solar arrays holding up after the dust storm?",
+      "typing_duration": 0.0,
+      "hold_duration": 3.8
+    },
+    {
+      "sender": "Rover",
+      "time": "06:24",
+      "text": "Battery at 98%, all 6 wheels nominal, and the sky over Jezero Crater is crystal clear today 🪐",
+      "typing_duration": 2.9,
+      "hold_duration": 4.2
+    },
+    {
+      "sender": "Rover",
+      "time": "06:24",
+      "text": "Captured a blue Martian sunrise before starting the climb up the crater rim ✨",
+      "typing_duration": 2.7,
+      "hold_duration": 3.8
+    },
+    {
+      "sender": "Houston",
+      "time": "06:36",
+      "text": "Copy that, Percy. Keep exploring — 8 billion people back home are cheering for you 🌍❤️",
+      "typing_duration": 2.8,
+      "hold_duration": 7.9
+    }
+  ],
+  "video_output": "04-mars-rover-checkin.mp4"
+}

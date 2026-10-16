@@ -1,0 +1,76 @@
+{
+  "output": "08-curie-franklin.gif",
+  "audio_output": "08-curie-franklin.mp3",
+  "theme": "dark",
+  "portrait": false,
+  "width": 1024,
+  "height": 768,
+  "fps": 20,
+  "loop": -1,
+  "initial_delay": 2.0,
+  "audio": {
+    "enabled": true,
+    "volume": 0.85,
+    "left_sound": "ding",
+    "right_sound": "received",
+    "typing_sound": false
+  },
+  "window": {
+    "title": "Marie Curie & Rosalind Franklin",
+    "subtitle": "Late Night Lab • Paris & London",
+    "input_placeholder": "Log lab observation...",
+    "typing_status_template": "{sender} is typing...",
+    "typing_bubble_label_template": "{sender} is typing..."
+  },
+  "participants": {
+    "Marie Curie": {
+      "side": "left",
+      "avatar_letter": "M",
+      "avatar_color": "#10b981",
+      "name_color": "#6ee7b7",
+      "bubble_color": "#1e3a34",
+      "bubble_border_color": "#10b981",
+      "text_color": "#f0fdf4"
+    },
+    "Rosalind Franklin": {
+      "side": "right",
+      "avatar_letter": "R",
+      "avatar_color": "#06b6d4",
+      "name_color": "#67e8f9",
+      "bubble_color": "#0369a1",
+      "bubble_border_color": "#38bdf8",
+      "text_color": "#ffffff"
+    }
+  },
+  "messages": [
+    {
+      "sender": "Marie Curie",
+      "time": "23:15",
+      "text": "Still in the lab! The good news is we isolated radium. The better news is I don't need a desk lamp because my notebooks glow in the dark 🧪✨",
+      "typing_duration": 0.0,
+      "hold_duration": 5.3
+    },
+    {
+      "sender": "Rosalind Franklin",
+      "time": "23:16",
+      "text": "Nothing beats a late-night breakthrough! Just finished a 62-hour X-ray exposure on DNA fibers—calling it Photo 51 🔬",
+      "typing_duration": 2.9,
+      "hold_duration": 4.2
+    },
+    {
+      "sender": "Marie Curie",
+      "time": "23:17",
+      "text": "Did the diffraction pattern come out sharp?",
+      "typing_duration": 2.6,
+      "hold_duration": 3.5
+    },
+    {
+      "sender": "Rosalind Franklin",
+      "time": "23:18",
+      "text": "Crystal clear double helix! Better lock my desk drawer though before Watson and Crick wander by 👀🧬",
+      "typing_duration": 2.9,
+      "hold_duration": 8.0
+    }
+  ],
+  "video_output": "08-curie-franklin.mp4"
+}

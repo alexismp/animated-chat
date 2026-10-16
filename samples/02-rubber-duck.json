@@ -1,0 +1,76 @@
+{
+  "output": "02-rubber-duck.gif",
+  "audio_output": "02-rubber-duck.mp3",
+  "theme": "light",
+  "portrait": true,
+  "width": 576,
+  "height": 960,
+  "fps": 20,
+  "loop": -1,
+  "initial_delay": 2.0,
+  "audio": {
+    "enabled": true,
+    "volume": 0.85,
+    "left_sound": "pop",
+    "right_sound": "chime",
+    "typing_sound": false
+  },
+  "window": {
+    "title": "Leo & Nina",
+    "subtitle": "Direct message • Active now",
+    "input_placeholder": "Write a message...",
+    "typing_status_template": "{sender} is typing...",
+    "typing_bubble_label_template": "{sender} is typing..."
+  },
+  "participants": {
+    "Leo": {
+      "side": "left",
+      "avatar_letter": "L",
+      "avatar_color": "#7c3aed",
+      "name_color": "#6d28d9",
+      "bubble_color": "#f1f5f9",
+      "bubble_border_color": "#e2e8f0",
+      "text_color": "#0f172a"
+    },
+    "Nina": {
+      "side": "right",
+      "avatar_letter": "N",
+      "avatar_color": "#0d9488",
+      "name_color": "#0f766e",
+      "bubble_color": "#0d9488",
+      "bubble_border_color": "#0f766e",
+      "text_color": "#ffffff"
+    }
+  },
+  "messages": [
+    {
+      "sender": "Leo",
+      "time": "11:14",
+      "text": "Hey Nina, do you have 5 mins? I've been stuck on a weird auth bug for 3 hours 😵",
+      "typing_duration": 0.0,
+      "hold_duration": 4.3
+    },
+    {
+      "sender": "Leo",
+      "time": "11:14",
+      "text": "Basically the token validator runs right after I load the config file, except wait...",
+      "typing_duration": 2.7,
+      "hold_duration": 3.8
+    },
+    {
+      "sender": "Leo",
+      "time": "11:15",
+      "text": "Never mind, I forgot to save the file in my editor. Fixed! You're a genius 🦆✨",
+      "typing_duration": 2.8,
+      "hold_duration": 4.0
+    },
+    {
+      "sender": "Nina",
+      "time": "11:15",
+      "text": "Happy to help! That'll be $150 for the rubber duck consultation ☕",
+      "typing_duration": 2.6,
+      "hold_duration": 7.5
+    }
+  ],
+  "video_output": "02-rubber-duck.mp4"
+}

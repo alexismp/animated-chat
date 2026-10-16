@@ -1,0 +1,76 @@
+{
+  "output": "01-friday-deploy.gif",
+  "audio_output": "01-friday-deploy.mp3",
+  "theme": "dark",
+  "portrait": false,
+  "width": 1024,
+  "height": 768,
+  "fps": 20,
+  "loop": -1,
+  "initial_delay": 2.0,
+  "audio": {
+    "enabled": true,
+    "volume": 0.85,
+    "left_sound": "received",
+    "right_sound": "sent",
+    "typing_sound": true
+  },
+  "window": {
+    "title": "#prod-releases • Sam & Maya",
+    "subtitle": "Friday 16:59 • 2 participants online",
+    "input_placeholder": "Message #prod-releases...",
+    "typing_status_template": "{sender} is typing...",
+    "typing_bubble_label_template": "{sender} is typing..."
+  },
+  "participants": {
+    "Sam": {
+      "side": "left",
+      "avatar_letter": "S",
+      "avatar_color": "#f59e0b",
+      "name_color": "#fcd34d",
+      "bubble_color": "#26344a",
+      "bubble_border_color": "#3b4c69",
+      "text_color": "#f8fafc"
+    },
+    "Maya": {
+      "side": "right",
+      "avatar_letter": "M",
+      "avatar_color": "#ec4899",
+      "name_color": "#f9a8d4",
+      "bubble_color": "#be185d",
+      "bubble_border_color": "#db2777",
+      "text_color": "#ffffff"
+    }
+  },
+  "messages": [
+    {
+      "sender": "Sam",
+      "time": "16:58",
+      "text": "Pushing a tiny one-line config tweak to prod right now. What could possibly go wrong? 🚀",
+      "typing_duration": 0.0,
+      "hold_duration": 4.0
+    },
+    {
+      "sender": "Maya",
+      "time": "16:59",
+      "text": "Sam no, it is literally 4:59 PM on a Friday!",
+      "typing_duration": 2.6,
+      "hold_duration": 3.5
+    },
+    {
+      "sender": "Sam",
+      "time": "17:00",
+      "text": "Relax, all checks passed! Have a relaxing weekend! 🏖️",
+      "typing_duration": 2.6,
+      "hold_duration": 3.5
+    },
+    {
+      "sender": "Maya",
+      "time": "17:01",
+      "text": "Why did my phone just buzz 14 times with https://status.example.com/incident-999 🔥",
+      "typing_duration": 2.6,
+      "hold_duration": 7.5
+    }
+  ],
+  "video_output": "01-friday-deploy.mp4"
+}
