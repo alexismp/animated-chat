@@ -87,6 +87,27 @@ python3 generate_chat_gif.py --portrait -o chat-portrait.gif
 python3 generate_chat_gif.py -v
 ```
 
+## Using GIF + MP3 in Google Slides
+
+The generated `.gif` and `.mp3` files are designed to play in lockstep inside **Google Slides**:
+
+- **Zero Timing Drift**: The default frame rate (`20 FPS`) produces an exact `50 ms` (`5 centiseconds`) frame delay, which matches the GIF89a specification's `1/100s` timer resolution without rounding drift across the browser and Slides presentation player.
+- **Single-Pass Playback**: By default (`"loop": -1`), the GIF plays once and holds on the final frame, matching the single-play `.mp3` track.
+
+### Step-by-Step Setup in Google Slides
+
+1. **Upload the MP3 to Google Drive**: Upload the generated `.mp3` file to a folder in your Google Drive (Google Slides inserts audio from Drive).
+2. **Insert the Animated GIF**: On your slide, choose **Insert → Image → Upload from computer** and select the generated `.gif`. Position and resize it on the slide.
+3. **Insert the Synchronized Audio**: On the same slide, choose **Insert → Audio** and select the `.mp3` file from your Google Drive.
+4. **Configure Automatic Playback**: With the speaker icon selected, open **Format options → Audio playback** in the right sidebar and set:
+   - **Start playing**: **Automatically** *(starts the audio at `t = 0.0s` the instant you transition onto the slide, matching the GIF start)*
+   - **Hide icon when presenting**: **Checked** *(keeps the slide clean during presentation)*
+   - **Loop audio**: **Unchecked**
+   - **Stop on slide change**: **Checked**
+5. **Present**: Enter **Slideshow** mode and advance to the slide—the chat bubbles and stereo notification chimes will play in sync.
+
+> **Tip**: You can also upload the `.mp4` file (generated with `-v`) to Google Drive, insert it via **Insert → Video**, and set **Play** to **Play (automatically)** in **Format options → Video playback**.
+
 ## Configuration Reference
 
 A sample `chat-config.json`:
