@@ -17,6 +17,7 @@ The tool renders a modern macOS-style chat window complete with realistic window
   - Configurable hold duration per message.
 - **Rich Content Support**: Automatic detection and styling of URLs/links and emoji characters.
 - **High-Quality Optimized Output**: Uses FFmpeg two-pass palette generation (`palettegen` / `paletteuse`) for crisp colors and compact file size.
+- **Synchronized MP3 Audio Track**: Automatically generates a companion `.mp3` audio file with spatial stereo message pop-up sounds (`received` warm bubble chime for incoming left-side messages, `sent` crisp upward pop for outgoing right-side messages, plus `pop`, `chime`, `ding`, or custom sound files) timed to each message's appearance on screen.
 - **Single-Play or Loop Options**: Configured by default to play once without looping (`-loop -1`), or customizable to loop infinitely or a specified number of times.
 
 ## Dependencies & Prerequisites
@@ -24,7 +25,7 @@ The tool renders a modern macOS-style chat window complete with realistic window
 ### System Requirements
 
 - **Operating System**: macOS (the script uses macOS system fonts: `/System/Library/Fonts/HelveticaNeue.ttc` and `/System/Library/Fonts/Apple Color Emoji.ttc`).
-- **FFmpeg**: Required for compiling frames into an optimized GIF.
+- **FFmpeg**: Required for compiling frames into an optimized GIF and encoding the MP3 audio track.
   ```bash
   brew install ffmpeg
   ```
@@ -45,7 +46,7 @@ The tool renders a modern macOS-style chat window complete with realistic window
 
 ### Quick Start
 
-Generate a GIF using the default configuration file (`chat-config.json`):
+Generate `chat.gif` and its synchronized `chat.mp3` audio track using the default configuration file (`chat-config.json`):
 
 ```bash
 python3 generate_chat_gif.py
@@ -54,18 +55,20 @@ python3 generate_chat_gif.py
 ### CLI Arguments
 
 ```bash
-python3 generate_chat_gif.py [config_file] [-o OUTPUT] [--loop LOOP] [--initial-delay INITIAL_DELAY]
+python3 generate_chat_gif.py [config_file] [-o OUTPUT] [-a AUDIO_OUTPUT] [--no-audio] [--loop LOOP] [--initial-delay INITIAL_DELAY]
 ```
 
 - `config_file` *(optional)*: Path to the configuration file (defaults to `chat-config.json`). Supports `.json`, `.toml`, and `.yaml` / `.yml`.
 - `-o`, `--output` *(optional)*: Override the output GIF file path specified in the configuration file.
+- `-a`, `--audio-output` *(optional)*: Override the output MP3 file path (defaults to `audio_output` in config, or matches the output GIF filename with an `.mp3` extension).
+- `--no-audio` *(optional)*: Disable generating the companion MP3 file.
 - `--loop` *(optional)*: Number of loops (`-1` to play once, `0` for infinite loop, or a positive integer for a specific repetition count; default: `-1`).
 - `--initial-delay` *(optional)*: Delay in seconds to display the empty window before the first message begins (default: `2.0`).
 
 ### Example
 
 ```bash
-python3 generate_chat_gif.py chat-config.json -o my-chat.gif --initial-delay 1.5
+python3 generate_chat_gif.py chat-config.json -o my-chat.gif -a my-chat.mp3 --initial-delay 1.5
 ```
 
 ## Configuration Reference
@@ -75,11 +78,19 @@ A sample `chat-config.json`:
 ```json
 {
   "output": "chat.gif",
+  "audio_output": "chat.mp3",
   "width": 1024,
   "height": 768,
-  "fps": 15,
+  "fps": 20,
   "loop": -1,
   "initial_delay": 2.0,
+  "audio": {
+    "enabled": true,
+    "volume": 0.85,
+    "left_sound": "received",
+    "right_sound": "sent",
+    "typing_sound": false
+  },
   "window": {
     "title": "Bob & Alice",
     "subtitle": "Direct message • 2 participants online",
@@ -131,14 +142,16 @@ A sample `chat-config.json`:
 | Parameter | Type | Description |
 |---|---|---|
 | `output` | string | Output file path for the generated GIF. |
+| `audio_output` | string | Output file path for the companion MP3 audio file (defaults to `<output>.mp3`). |
 | `width` | integer | Canvas width in pixels (e.g., `1024`). |
 | `height` | integer | Canvas height in pixels (e.g., `768`). |
-| `fps` | integer | Frame rate in frames per second (e.g., `15`). |
+| `fps` | integer | Frame rate in frames per second (e.g., `20`). |
 | `loop` | integer / bool | GIF loop count (`-1` = play once, `0` = infinite). Default is `-1`. |
 | `initial_delay`| float | Duration in seconds before the conversation starts. Default is `2.0`. |
+| `audio` | object | Audio settings (`enabled`, `volume`, `left_sound`, `right_sound`, `typing_sound`). Built-in sounds: `received`, `sent`, `pop`, `chime`, `ding`, `none`, or a path to an audio file. |
 | `window` | object | Customization for the window title, subtitle, placeholders, and templates. |
-| `participants` | object | Participant styling dictionary keyed by sender name (`avatar_letter`, `avatar_color`, `bubble_color`, `side`, etc.). |
-| `messages` | array | Ordered list of messages with `sender`, `time`, `text`, `typing_duration`, and `hold_duration`. |
+| `participants` | object | Participant styling dictionary keyed by sender name (`avatar_letter`, `avatar_color`, `bubble_color`, `side`, optional `sound`, etc.). |
+| `messages` | array | Ordered list of messages with `sender`, `time`, `text`, `typing_duration`, `hold_duration`, and optional `sound` / `volume`. |
 
 ## License
 

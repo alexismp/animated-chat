@@ -1,10 +1,18 @@
 {
   "output": "chat.gif",
+  "audio_output": "chat.mp3",
   "width": 1024,
   "height": 768,
-  "fps": 15,
+  "fps": 20,
   "loop": -1,
   "initial_delay": 2.0,
+  "audio": {
+    "enabled": true,
+    "volume": 0.85,
+    "left_sound": "received",
+    "right_sound": "sent",
+    "typing_sound": false
+  },
   "window": {
     "title": "Bob & Alice",
     "subtitle": "Direct message • 2 participants online",

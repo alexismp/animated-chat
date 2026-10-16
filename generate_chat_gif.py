@@ -12,15 +12,17 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Generate an animated chat GIF from a JSON/TOML configuration file."""
+"""Generate an animated chat GIF and companion MP3 audio track from a JSON/TOML/YAML configuration file."""
 
 import argparse
 import json
 import math
 import os
 import re
+import struct
 import subprocess
 import tempfile
+import wave
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
@@ -55,7 +57,7 @@ class ChatGifGenerator:
         self.config = config
         self.width = int(config.get("width", 1024))
         self.height = int(config.get("height", 768))
-        self.fps = int(config.get("fps", 15))
+        self.fps = int(config.get("fps", 20))
         loop_cfg = config.get("loop", -1)
         if isinstance(loop_cfg, bool):
             self.loop = 0 if loop_cfg else -1
@@ -72,6 +74,7 @@ class ChatGifGenerator:
             self.loop = int(loop_cfg)
         self.initial_delay = float(config.get("initial_delay", config.get("start_delay", 2.0)))
         self.window_cfg = config.get("window", {})
+        self.audio_cfg = config.get("audio", {}) if isinstance(config.get("audio"), dict) else {}
         self.participants = config.get("participants", {})
         self.messages = config.get("messages", [])
 
@@ -157,6 +160,11 @@ class ChatGifGenerator:
         default_name = "#6ee7b7" if is_right else "#a5b4fc"
         default_bubble = "#2563eb" if is_right else "#26344a"
         default_border = "#3b82f6" if is_right else "#3b4c69"
+        default_sound = (
+            self.audio_cfg.get("right_sound", "sent")
+            if is_right
+            else self.audio_cfg.get("left_sound", "received")
+        )
         return {
             "is_right": is_right,
             "avatar_letter": p.get("avatar_letter", sender[:1].upper() if sender else "?"),
@@ -165,6 +173,7 @@ class ChatGifGenerator:
             "bubble_color": p.get("bubble_color", default_bubble),
             "bubble_border_color": p.get("bubble_border_color", default_border),
             "text_color": p.get("text_color", "#f8fafc"),
+            "sound": p.get("sound", default_sound),
         }
 
     def create_base_window(self):
@@ -701,7 +710,271 @@ class ChatGifGenerator:
 
         return frame
 
-    def generate(self, output_path):
+    def _load_external_sound(self, sound_path, sample_rate=44100):
+        """Decode an external audio file into mono float samples [-1.0, 1.0]."""
+        cmd = [
+            "ffmpeg",
+            "-y",
+            "-i",
+            str(sound_path),
+            "-f",
+            "s16le",
+            "-acodec",
+            "pcm_s16le",
+            "-ar",
+            str(sample_rate),
+            "-ac",
+            "1",
+            "pipe:1",
+        ]
+        res = subprocess.run(
+            cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL
+        )
+        raw = res.stdout
+        count = len(raw) // 2
+        ints = struct.unpack(f"<{count}h", raw[: count * 2])
+        return [s / 32768.0 for s in ints]
+
+    def _synthesize_sound(self, sound_name, sample_rate=44100):
+        """Synthesize a crisp UI message pop/notification sound in pure Python."""
+        if not sound_name or str(sound_name).lower() in ("none", "false", "off", "silent"):
+            return []
+
+        name = str(sound_name).strip()
+        # Support custom file paths or macOS system sounds
+        candidate_paths = [
+            Path(name),
+            Path(f"/System/Library/Sounds/{name}.aiff"),
+            Path(f"/System/Library/Sounds/{name.capitalize()}.aiff"),
+        ]
+        for cpath in candidate_paths:
+            if cpath.is_file():
+                return self._load_external_sound(cpath, sample_rate=sample_rate)
+
+        preset = name.lower()
+        if preset in ("received", "incoming", "left"):
+            # Warm incoming chat bubble pop + two-note rising chime (D5 -> A5)
+            duration = 0.34
+            n_samples = int(duration * sample_rate)
+            samples = [0.0] * n_samples
+            phase_pop = 0.0
+            for i in range(n_samples):
+                t = i / sample_rate
+                val = 0.0
+                # Soft organic bubble pop transient (0 -> 65ms, pitch sweep 290Hz -> 640Hz)
+                if t < 0.065:
+                    freq_pop = 290.0 + 350.0 * ((t / 0.065) ** 0.65)
+                    phase_pop += 2.0 * math.pi * freq_pop / sample_rate
+                    env_pop = math.sin(math.pi * t / 0.065) * math.exp(-16.0 * t)
+                    val += 0.42 * env_pop * math.sin(phase_pop)
+
+                # First warm note: D5 (587.33 Hz)
+                if t < 0.18:
+                    attack1 = min(1.0, t / 0.005)
+                    env1 = attack1 * math.exp(-18.0 * t)
+                    f1 = 587.33
+                    val += 0.45 * env1 * (
+                        math.sin(2.0 * math.pi * f1 * t)
+                        + 0.22 * math.sin(2.0 * math.pi * (f1 * 2.0) * t)
+                    )
+
+                # Second warm note: A5 (880.0 Hz) starting at 55ms
+                if t >= 0.055:
+                    lt = t - 0.055
+                    attack2 = min(1.0, lt / 0.005)
+                    env2 = attack2 * math.exp(-13.5 * lt)
+                    f2 = 880.0
+                    val += 0.52 * env2 * (
+                        math.sin(2.0 * math.pi * f2 * t)
+                        + 0.18 * math.sin(2.0 * math.pi * (f2 * 2.0) * t)
+                    )
+
+                samples[i] = max(-1.0, min(1.0, val))
+            return samples
+
+        if preset in ("sent", "outgoing", "right"):
+            # Crisp sent-message upward pitch-glide pop (C5 -> C6 with G6 sparkle)
+            duration = 0.24
+            n_samples = int(duration * sample_rate)
+            samples = [0.0] * n_samples
+            phase = 0.0
+            for i in range(n_samples):
+                t = i / sample_rate
+                # Smooth exponential pitch glide from 523.25 Hz (C5) to 1046.50 Hz (C6) over 70ms
+                glide = min(1.0, t / 0.070)
+                freq = 523.25 * (2.0 ** (glide ** 0.75))
+                phase += 2.0 * math.pi * freq / sample_rate
+                attack = min(1.0, t / 0.004)
+                env = attack * math.exp(-17.5 * t)
+                val = 0.58 * env * (math.sin(phase) + 0.20 * math.sin(2.0 * phase))
+
+                # Subtle high harmonic sparkle at 40ms (G6 = 1567.98 Hz)
+                if t >= 0.040:
+                    lt = t - 0.040
+                    s_attack = min(1.0, lt / 0.004)
+                    s_env = s_attack * math.exp(-24.0 * lt)
+                    val += 0.24 * s_env * math.sin(2.0 * math.pi * 1567.98 * lt)
+
+                samples[i] = max(-1.0, min(1.0, val))
+            return samples
+
+        if preset == "chime":
+            # Gentle two-tone chime (E5 -> B5)
+            duration = 0.36
+            n_samples = int(duration * sample_rate)
+            samples = [0.0] * n_samples
+            for i in range(n_samples):
+                t = i / sample_rate
+                val = 0.0
+                if t < 0.20:
+                    env1 = min(1.0, t / 0.006) * math.exp(-15.0 * t)
+                    val += 0.48 * env1 * math.sin(2.0 * math.pi * 659.25 * t)
+                if t >= 0.065:
+                    lt = t - 0.065
+                    env2 = min(1.0, lt / 0.006) * math.exp(-11.5 * lt)
+                    val += 0.52 * env2 * math.sin(2.0 * math.pi * 987.77 * lt)
+                samples[i] = max(-1.0, min(1.0, val))
+            return samples
+
+        if preset == "ding":
+            # Single resonant bell tone (G5 = 783.99 Hz)
+            duration = 0.32
+            n_samples = int(duration * sample_rate)
+            samples = [0.0] * n_samples
+            for i in range(n_samples):
+                t = i / sample_rate
+                env = min(1.0, t / 0.004) * math.exp(-13.0 * t)
+                val = 0.60 * env * (
+                    math.sin(2.0 * math.pi * 783.99 * t)
+                    + 0.25 * math.exp(-25.0 * t) * math.sin(2.0 * math.pi * 1567.98 * t)
+                )
+                samples[i] = max(-1.0, min(1.0, val))
+            return samples
+
+        # Default "pop": classic crisp chat bubble pop (pitch sweep 310Hz -> 780Hz)
+        duration = 0.14
+        n_samples = int(duration * sample_rate)
+        samples = [0.0] * n_samples
+        phase = 0.0
+        for i in range(n_samples):
+            t = i / sample_rate
+            sweep = min(1.0, t / 0.055)
+            freq = 310.0 + 470.0 * (sweep ** 0.6)
+            phase += 2.0 * math.pi * freq / sample_rate
+            env = min(1.0, t / 0.003) * math.exp(-24.0 * t)
+            samples[i] = max(-1.0, min(1.0, 0.68 * env * math.sin(phase)))
+        return samples
+
+    def _synthesize_keystroke(self, pitch_scale=1.0, sample_rate=44100):
+        """Synthesize a subtle tactile typing tick."""
+        duration = 0.025
+        n_samples = int(duration * sample_rate)
+        samples = [0.0] * n_samples
+        f_click = 1100.0 * pitch_scale
+        f_body = 320.0 * pitch_scale
+        for i in range(n_samples):
+            t = i / sample_rate
+            env = min(1.0, t / 0.001) * math.exp(-160.0 * t)
+            val = 0.18 * env * (
+                0.6 * math.sin(2.0 * math.pi * f_click * t)
+                + 0.4 * math.sin(2.0 * math.pi * f_body * t)
+            )
+            samples[i] = val
+        return samples
+
+    def generate_audio(self, audio_output_path, timeline=None, total_duration=None):
+        """Generate an MP3 audio file with message pop-up sounds synchronized to the timeline."""
+        if timeline is None or total_duration is None:
+            timeline, total_duration = self.build_timeline()
+
+        total_frames = max(1, int(round(total_duration * self.fps)))
+        exact_duration = total_frames / self.fps
+        sample_rate = 44100
+        total_samples = max(1, int(round(exact_duration * sample_rate)))
+
+        left_buf = [0.0] * total_samples
+        right_buf = [0.0] * total_samples
+
+        master_volume = float(self.audio_cfg.get("volume", 0.85))
+        enable_typing = bool(self.audio_cfg.get("typing_sound", False))
+        sound_cache = {}
+
+        for idx, item in enumerate(timeline):
+            msg = item["msg"]
+            sender = item["sender"]
+            st = self.get_participant_style(sender)
+            is_right = st["is_right"]
+
+            # Stereo placement: subtle left for left-side sender, subtle right for right-side sender
+            pan = 0.22 if is_right else -0.22
+            gain_l = master_volume * min(1.0, 1.0 - pan)
+            gain_r = master_volume * min(1.0, 1.0 + pan)
+
+            # Optional typing clicks during typing indicator phase
+            if enable_typing and item["typing_end"] > item["typing_start"]:
+                t_cursor = item["typing_start"] + 0.08
+                step_idx = 0
+                while t_cursor < item["typing_end"] - 0.08:
+                    pitch_var = 0.94 + 0.04 * ((step_idx * 7 + idx * 3) % 4)
+                    tick = self._synthesize_keystroke(pitch_scale=pitch_var, sample_rate=sample_rate)
+                    start_sample = int(round(t_cursor * sample_rate))
+                    for k, s_val in enumerate(tick):
+                        pos = start_sample + k
+                        if 0 <= pos < total_samples:
+                            left_buf[pos] += s_val * gain_l
+                            right_buf[pos] += s_val * gain_r
+                    interval = 0.11 + 0.03 * ((step_idx * 5 + idx) % 3)
+                    t_cursor += interval
+                    step_idx += 1
+
+            # Message pop-up sound at msg_start
+            sound_spec = msg.get("sound", st["sound"])
+            if sound_spec not in sound_cache:
+                sound_cache[sound_spec] = self._synthesize_sound(
+                    sound_spec, sample_rate=sample_rate
+                )
+            pop_samples = sound_cache[sound_spec]
+
+            msg_volume = float(msg.get("volume", 1.0))
+            start_idx = int(round(item["msg_start"] * sample_rate))
+            for k, s_val in enumerate(pop_samples):
+                pos = start_idx + k
+                if 0 <= pos < total_samples:
+                    left_buf[pos] += s_val * gain_l * msg_volume
+                    right_buf[pos] += s_val * gain_r * msg_volume
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            wav_path = os.path.join(tmp_dir, "track.wav")
+            pcm_bytes = bytearray(total_samples * 4)
+            for i in range(total_samples):
+                l_int = int(max(-1.0, min(1.0, left_buf[i])) * 32767.0)
+                r_int = int(max(-1.0, min(1.0, right_buf[i])) * 32767.0)
+                struct.pack_into("<hh", pcm_bytes, i * 4, l_int, r_int)
+
+            with wave.open(wav_path, "wb") as wf:
+                wf.setnchannels(2)
+                wf.setsampwidth(2)
+                wf.setframerate(sample_rate)
+                wf.writeframes(pcm_bytes)
+
+            cmd = [
+                "ffmpeg",
+                "-y",
+                "-i",
+                wav_path,
+                "-codec:a",
+                "libmp3lame",
+                "-qscale:a",
+                "2",
+                str(audio_output_path),
+            ]
+            subprocess.run(
+                cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE
+            )
+
+        return audio_output_path, exact_duration
+
+    def generate(self, output_path, audio_output_path=None):
         base_win = self.create_base_window()
         timeline, total_duration = self.build_timeline()
         total_frames = max(1, int(round(total_duration * self.fps)))
@@ -727,6 +1000,11 @@ class ChatGifGenerator:
             ]
             subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
 
+        if audio_output_path is not None:
+            self.generate_audio(
+                audio_output_path, timeline=timeline, total_duration=total_duration
+            )
+
         return output_path, total_frames, total_duration
 
 
@@ -751,18 +1029,28 @@ def main():
     default_config = script_dir / "chat-config.json"
 
     parser = argparse.ArgumentParser(
-        description="Generate an animated chat GIF from a configuration file."
+        description="Generate an animated chat GIF and companion MP3 audio file from a configuration file."
     )
     parser.add_argument(
         "config",
         nargs="?",
         default=str(default_config),
-        help="Path to the JSON/TOML configuration file (default: chat-config.json)",
+        help="Path to the JSON/TOML/YAML configuration file (default: chat-config.json)",
     )
     parser.add_argument(
         "-o",
         "--output",
         help="Override output GIF path from configuration file",
+    )
+    parser.add_argument(
+        "-a",
+        "--audio-output",
+        help="Override output MP3 path from configuration file (default: matches output GIF basename with .mp3)",
+    )
+    parser.add_argument(
+        "--no-audio",
+        action="store_true",
+        help="Disable MP3 audio generation",
     )
     parser.add_argument(
         "--loop",
@@ -791,12 +1079,36 @@ def main():
     if not out_path.is_absolute():
         out_path = config_path.parent / out_path
 
+    audio_cfg = config.get("audio", {})
+    audio_enabled = not args.no_audio and (
+        audio_cfg.get("enabled", True) if isinstance(audio_cfg, dict) else bool(audio_cfg)
+    )
+
+    audio_path = None
+    if audio_enabled:
+        if args.audio_output:
+            audio_file = args.audio_output
+        elif args.output:
+            audio_file = str(Path(args.output).with_suffix(".mp3"))
+        else:
+            audio_file = (
+                config.get("audio_output")
+                or (audio_cfg.get("output") if isinstance(audio_cfg, dict) else None)
+                or str(out_path.with_suffix(".mp3"))
+            )
+        audio_path = Path(audio_file)
+        if not audio_path.is_absolute():
+            audio_path = config_path.parent / audio_path
+
     generator = ChatGifGenerator(config)
-    final_path, frames, duration = generator.generate(out_path)
+    final_path, frames, duration = generator.generate(out_path, audio_output_path=audio_path)
     size_kb = os.path.getsize(final_path) / 1024.0
     print(
         f"Generated {final_path} ({generator.width}x{generator.height}, {frames} frames, {duration:.1f}s, {size_kb:.1f} KB)"
     )
+    if audio_path is not None and audio_path.exists():
+        audio_kb = os.path.getsize(audio_path) / 1024.0
+        print(f"Generated {audio_path} ({duration:.1f}s, {audio_kb:.1f} KB)")
 
 
 if __name__ == "__main__":
